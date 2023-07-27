@@ -8,7 +8,7 @@ const infoAPI = "https://api.consumet.org/anime/gogoanime/info";
 app.use(express.static("static"));
 
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+    res.send(`<script>window.location.href = "https://github.com/FireStreaker2/QuickAnime";</script>`);
 });
 
 app.get("/watch/:anime", async (req, res) => {
