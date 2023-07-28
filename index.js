@@ -2,8 +2,7 @@ const axios = require("axios");
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
-const api = "https://api.consumet.org/anime/gogoanime/watch";
-const infoAPI = "https://api.consumet.org/anime/gogoanime/info";
+const api = "https://api.consumet.org/anime/gogoanime";
 
 app.use(express.static("static"));
 
@@ -18,10 +17,10 @@ app.get("/watch/:anime", async (req, res) => {
     const name = anime.slice(0, anime.indexOf("-episode-"));
   
     try {
-        const response = await axios.get(`${api}/${anime}`);
+        const response = await axios.get(`${api}/watch/${anime}`);
         const data = response.data;
 
-        const info = await axios.get(`${infoAPI}/${name}`);
+        const info = await axios.get(`${api}/info/${name}`);
         const description = info.data.description;
         const image = info.data.image;
 
@@ -85,6 +84,30 @@ app.get("/watch/:anime", async (req, res) => {
             </html>
         `);
 
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error occurred while fetching data.");
+    }
+});
+
+app.get("/recent", async (req, res) => {
+    try {
+        const response = await axios.get(`${api}/recent-episodes`);
+        const data = response.data;
+
+        res.send(data);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error occurred while fetching data.");
+    }
+});
+
+app.get("/top", async (req, res) => {
+    try {
+        const response = await axios.get(`${api}/top-airing`);
+        const data = response.data;
+
+        res.send(data);
     } catch (error) {
         console.log(error);
         res.status(500).send("Error occurred while fetching data.");

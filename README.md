@@ -4,7 +4,14 @@
 QuickAnime is a way to quickly watch anime. It was built with Node.js, and utilizes the <a href="https://github.com/consumet/api.consumet.org">Consumet API</a>. It also uses <a href="https://github.com/sampotts/plyr">Plyr</a> as a way to view the videos.
 
 # Usage
-Base URL: ``https://quickanime.firestreaker2.gq/watch/${episodeid}``   
+At the core, QuickAnime comes with a couple routes, which are shown below.
+| Route               | Usage                |
+|---------------------|----------------------|
+| /watch/${episodeid} | Watch anime          |
+| /recent             | See recent episodes  |
+| /top                | See top airing anime |
+
+Base URL: ``https://quickanime.firestreaker2.gq``   
 
 The ``episodeid`` variable should be in the format of ``${name}-episode-${episode-number}``, where everything is lowercase and spaces are replaced with hyphens (``-``).  
 Example: ``https://quickanime.firestreaker2.gq/watch/oshi-no-ko-episode-1``
