@@ -5,11 +5,13 @@ QuickAnime is a way to quickly watch anime. It was built with Node.js, and utili
 
 # Usage
 At the core, QuickAnime comes with a couple routes, which are shown below.
-| Route               | Usage                |
-|---------------------|----------------------|
-| /watch/${episodeid} | Watch anime          |
-| /recent             | See recent episodes  |
-| /top                | See top airing anime |
+| Route                        | Usage                |
+|------------------------------|----------------------|
+| /                            | Redirect             |
+| /watch/${episodeid}          | Watch anime          |
+| /watch/${episodeid}/comments | See comments         |
+| /recent                      | See recent episodes  |
+| /top                         | See top airing anime |
 
 Base URL: ``https://quickanime.firestreaker2.gq``   
 
@@ -29,6 +31,8 @@ $ cd QuickAnime
 $ npm i
 $ npm start
 ```
+
+> If you would like to have your own comment section whilst selfhosting this project, be sure to setup a [disqus](https://disqus.com/) account and set the ``website`` and ``disqusShortName`` environment variables to match your own.
 
 # License
 <a href="https://github.com/FireStreaker2/QuickAnime/blob/main/LICENSE">MIT</a>

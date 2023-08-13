@@ -4,6 +4,9 @@ const app = express();
 const port = process.env.PORT || 3000;
 const api = "https://api.consumet.org/anime/gogoanime";
 
+const website = process.env.WEBSITE || "https://quickanime.firestreaker2.gq";
+const disqusShortName = process.env.DISQUS_SHORT_NAME || "quick-anime";
+
 app.use(express.static("static"));
 
 app.get("/", (req, res) => {
@@ -88,6 +91,54 @@ app.get("/watch/:anime", async (req, res) => {
         console.log(error);
         res.status(500).send("Error occurred while fetching data.");
     }
+});
+
+app.get("/watch/:anime/comments", (req, res) => {
+    const anime = req.params.anime;
+    const title = anime.replace(/-/g, " ");
+
+    res.send(`
+        <!-- https://github.com/FireStreaker2/QuickAnime -->
+        <!DOCTYPE HTML>
+        <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta name="description" content="QuickAnime - View ${title}'s Comments">
+                <meta name="keywords" content="QuickAnime />
+                <meta name=”copyright” content=”FireStreaker2”>
+                <meta property="og:title" content="QuickAnime" />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content="https://quickanime.firestreaker2.gq" />
+                <meta property="og:description" content="QuickAnime - View ${title}'s Comments" />
+                <meta name="theme-color" content="#000000">
+                <meta name="twitter:card" content="summary_large_image">
+
+                <title>${title} - Comments | QuickAnime</title>
+                <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+                <link rel="stylesheet" href="/index.css" />
+            </head>
+    
+            <body>
+                <div id="disqus_thread"></div>
+
+                <script>
+                    var disqus_config = function () {
+                        this.page.url = "${website}/watch/${anime}/comments";
+                        this.page.identifier = "${anime}";
+                    };
+
+                    (function() {
+                        var d = document, s = d.createElement("script");
+                        s.src = "https://${disqusShortName}.disqus.com/embed.js";
+                        s.setAttribute("data-timestamp", +new Date());
+                        (d.head || d.body).appendChild(s);
+                    })();
+                </script>
+            </body>
+        </html>
+    `);
 });
 
 app.get("/recent", async (req, res) => {
