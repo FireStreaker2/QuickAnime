@@ -3,7 +3,9 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 const api = "https://api.consumet.org/anime/gogoanime";
+const cdn = "https://gogocdn.net";
 
+// disqus
 const website = process.env.WEBSITE || "https://quickanime.firestreaker2.gq";
 const disqusShortName = process.env.DISQUS_SHORT_NAME || "quick-anime";
 
@@ -144,7 +146,11 @@ app.get("/watch/:anime/comments", (req, res) => {
 app.get("/recent", async (req, res) => {
     try {
         const response = await axios.get(`${api}/recent-episodes`);
-        const data = response.data;
+        let data = response.data;
+        data = JSON.stringify(data);
+        data = data.replace(/https:\/\/gogoanimehd.io/g, `${website}/watch`);
+        data = data.replace(/https:\/\/gogocdn.net/g, `${website}`);
+        data = JSON.parse(data);
 
         res.send(data);
     } catch (error) {
@@ -156,8 +162,45 @@ app.get("/recent", async (req, res) => {
 app.get("/top", async (req, res) => {
     try {
         const response = await axios.get(`${api}/top-airing`);
+        let data = response.data;
+        data = JSON.stringify(data);
+        data = data.replace(/https:\/\/gogoanimehd.io/g, `${website}`);
+        data = data.replace(/https:\/\/gogocdn.net/g, `${website}`);
+        data = JSON.parse(data);
+
+        res.send(data);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error occurred while fetching data.");
+    }
+});
+
+app.get("/category/:anime", async (req, res) => {
+    const anime = req.params.anime;
+
+    try {
+        const response = await axios.get(`${api}/info/${anime}`);
+        let data = response.data;
+        data = JSON.stringify(data);
+        data = data.replace(/https:\/\/gogoanimehd.io\//g, `${website}/watch`);
+        data = data.replace(/https:\/\/gogocdn.net/g, `${website}`);
+        data = JSON.parse(data);
+
+        res.send(data);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error occurred while fetching data.");
+    }
+});
+
+app.get("/cover/:image", async (req, res) => {
+    const image = req.params.image;
+    
+    try {
+        const response = await axios.get(`${cdn}/cover/${image}`, { responseType: "arraybuffer" });
         const data = response.data;
 
+        res.set("Content-Type", "image/png");
         res.send(data);
     } catch (error) {
         console.log(error);

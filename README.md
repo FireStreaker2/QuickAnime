@@ -12,6 +12,8 @@ At the core, QuickAnime comes with a couple routes, which are shown below.
 | /watch/${episodeid}/comments | See comments         |
 | /recent                      | See recent episodes  |
 | /top                         | See top airing anime |
+| /category/${anime}           | Extra Anime Info     |
+| /cover/${image}              | Anime Cover Image    | 
 
 Base URL: ``https://quickanime.firestreaker2.gq``   
 
